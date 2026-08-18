@@ -2,7 +2,7 @@
 # with create = false to read it back, each isolating its keys via its own Redis
 # DB index.
 module "redis" {
-  source = "git::https://github.com/its-me/terraform.module.redis.git?ref=main"
+  source = "git::https://github.com/its-me/terraform.module.redis.git?ref=v0.1.0"
 
   project_id = var.project_id
   region     = var.region
