@@ -3,8 +3,22 @@
 project_id = ""
 region     = ""
 
+# One entry per app repo sharing the load balancer. cloud_run_service must match the
+# Cloud Run service name created by that app repo (e.g. "twenty-server").
+backends = {
+  "crm.example.com" = {
+    cloud_run_service = "twenty-server"
+    region            = ""
+  }
+  "docs.example.com" = {
+    cloud_run_service = "outline-server"
+    region            = ""
+  }
+}
+
 # Optional, defaults shown. App repos consuming this shared infrastructure must be
 # configured with matching names.
 # network_name         = "tools"
 # db_instance_name     = "postgres"
 # redis_instance_name  = "redis"
+# loadbalancer_name    = "apps"

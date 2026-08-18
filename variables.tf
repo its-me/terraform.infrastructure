@@ -56,6 +56,20 @@ variable "redis_memory_size_gb" {
   default     = 1
 }
 
+variable "loadbalancer_name" {
+  description = "Name prefix for the shared load balancer's resources (see terraform.module.loadbalancer)."
+  type        = string
+  default     = "apps"
+}
+
+variable "backends" {
+  description = "Map of domain -> Cloud Run service to route to on the shared load balancer, keyed by the public hostname (e.g. \"crm.example.com\"). One entry per app repo sharing this load balancer."
+  type = map(object({
+    cloud_run_service = string
+    region            = string
+  }))
+}
+
 variable "labels" {
   description = "Labels applied to all resources that support them."
   type        = map(string)

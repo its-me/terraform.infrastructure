@@ -37,3 +37,8 @@ output "redis_port" {
   description = "Port the Redis instance listens on."
   value       = module.redis.port
 }
+
+output "load_balancer_ip" {
+  description = "Global external IP of the shared load balancer. Point an A record for every domain in var.backends at this."
+  value       = module.loadbalancer.ip_address
+}
