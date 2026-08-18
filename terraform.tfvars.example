@@ -1,0 +1,10 @@
+# Copy to terraform.tfvars and fill in your own values.
+
+project_id = ""
+region     = ""
+
+# Optional, defaults shown. App repos consuming this shared infrastructure must be
+# configured with matching names.
+# network_name         = "tools"
+# db_instance_name     = "postgres"
+# redis_instance_name  = "redis"
