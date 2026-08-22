@@ -20,7 +20,7 @@ resource "google_project_service" "apis" {
 # terraform.outline, ...) all point at this same `name` with create = false to read
 # it back instead of creating their own.
 module "network" {
-  source = "git::https://github.com/its-me/terraform.module.network.git?ref=v0.1.0"
+  source = "git::https://github.com/its-me/terraform.module.network.git?ref=v0.1.1"
 
   project_id = var.project_id
   region     = var.region

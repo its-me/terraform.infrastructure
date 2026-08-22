@@ -23,7 +23,7 @@ variable "db_instance_name" {
 variable "db_tier" {
   description = "Cloud SQL machine tier for the shared Postgres instance."
   type        = string
-  default     = "db-custom-1-3840"
+  default     = "db-f1-micro"
 }
 
 variable "db_availability_type" {
@@ -35,7 +35,7 @@ variable "db_availability_type" {
 variable "db_disk_size_gb" {
   description = "Cloud SQL disk size in GB."
   type        = number
-  default     = 20
+  default     = 10
 }
 
 variable "redis_instance_name" {
