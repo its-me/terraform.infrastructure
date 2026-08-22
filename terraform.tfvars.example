@@ -4,14 +4,14 @@ project_id = ""
 region     = ""
 
 # One entry per app repo sharing the load balancer. cloud_run_service must match the
-# Cloud Run service name created by that app repo (e.g. "twenty-server").
+# Cloud Run service name created by that app repo (e.g. "twenty").
 backends = {
   "crm.example.com" = {
-    cloud_run_service = "twenty-server"
+    cloud_run_service = "twenty"
     region            = ""
   }
   "docs.example.com" = {
-    cloud_run_service = "outline-server"
+    cloud_run_service = "outline"
     region            = ""
   }
 }
