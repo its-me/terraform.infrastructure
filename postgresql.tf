@@ -8,6 +8,7 @@ module "postgresql" {
   name              = var.db_instance_name
   create            = true
   network_id        = module.network.network_id
+  database_version  = var.db_version
   tier              = var.db_tier
   availability_type = var.db_availability_type
   disk_size_gb      = var.db_disk_size_gb

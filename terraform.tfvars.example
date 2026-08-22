@@ -22,3 +22,13 @@ backends = {
 # db_instance_name     = "postgres"
 # redis_instance_name  = "redis"
 # loadbalancer_name    = "apps"
+
+# Optional, defaults shown. Cloud SQL instance type/version and Memorystore Redis
+# instance type. Picked for lowest cost; raise these if the shared instances get
+# resource-constrained under real load.
+# db_version           = "POSTGRES_18"
+# db_tier              = "db-f1-micro"
+# db_availability_type = "ZONAL"
+# db_disk_size_gb      = 10
+# redis_tier           = "BASIC"
+# redis_memory_size_gb = 1

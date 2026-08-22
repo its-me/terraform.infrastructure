@@ -20,6 +20,12 @@ variable "db_instance_name" {
   default     = "postgres"
 }
 
+variable "db_version" {
+  description = "Postgres version for the shared Cloud SQL instance."
+  type        = string
+  default     = "POSTGRES_18"
+}
+
 variable "db_tier" {
   description = "Cloud SQL machine tier for the shared Postgres instance."
   type        = string
