@@ -1,5 +1,23 @@
 # Copy to terraform.tfvars and fill in your own values.
 
+# IMPORTANT: this is shared infrastructure (network, Cloud SQL, Redis, load balancer)
+# consumed by every app repo (terraform.twenty, terraform.outline, ...). Terraform has
+# no visibility across repos, so it cannot enforce this itself:
+#
+#   Destroy order: all app repos FIRST, then this repo.
+#
+# Destroying this repo while an app repo still exists strands that app (its Cloud Run
+# service loses its DB/Redis/network). It can also leave the shared VPC peering
+# half-torn-down: Cloud SQL/Redis instances must be gone before the
+# google_service_networking_connection can be deleted, and GCP needs a few minutes
+# after that to clean up the peering's auto-generated routes. If `terraform destroy`
+# here fails with "execution halted" on the network/service_networking_connection, or
+# the GCP Console refuses to delete the network with "the auto-generated peering route
+# cannot be deleted", wait ~10-15 minutes and retry `terraform destroy` -- do not try to
+# delete the peering or network from the Console (it cannot remove a
+# Service-Networking-managed peering; only `terraform destroy` or
+# `gcloud services vpc-peerings delete` can).
+
 project_id = ""
 region     = ""
 
