@@ -20,6 +20,12 @@ variable "db_instance_name" {
   default     = "postgresql0"
 }
 
+variable "db_port" {
+  description = "Port the Cloud SQL Postgres instance listens on. Cloud SQL doesn't expose this as an attribute; fixed at 5432 for Postgres."
+  type        = number
+  default     = 5432
+}
+
 variable "db_version" {
   description = "Postgres version for the shared Cloud SQL instance."
   type        = string
