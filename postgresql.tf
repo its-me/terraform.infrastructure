@@ -5,14 +5,14 @@ module "postgresql" {
 
   project_id        = var.project_id
   region            = var.region
-  name              = var.db_instance_name
+  name              = var.postgresql_instance_name
   create            = true
   network_id        = module.network.network_id
-  database_version  = var.db_version
-  port              = var.db_port
-  tier              = var.db_tier
-  availability_type = var.db_availability_type
-  disk_size_gb      = var.db_disk_size_gb
+  database_version  = var.postgresql_version
+  port              = var.postgresql_port
+  tier              = var.postgresql_tier
+  availability_type = var.postgresql_availability_type
+  disk_size_gb      = var.postgresql_disk_size_gb
   labels            = var.labels
 
   depends_on = [module.network]

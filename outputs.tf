@@ -18,22 +18,22 @@ output "vpc_connector_id" {
   value       = module.network.vpc_connector_id
 }
 
-output "db_instance_name" {
+output "postgresql_instance_name" {
   description = "Name of the shared Cloud SQL instance."
   value       = module.postgresql.instance_name
 }
 
-output "db_instance_connection_name" {
+output "postgresql_instance_connection_name" {
   description = "Cloud SQL instance connection name."
   value       = module.postgresql.instance_connection_name
 }
 
-output "db_private_ip" {
+output "postgresql_private_ip" {
   description = "Private IP address of the Cloud SQL instance."
   value       = module.postgresql.instance_private_ip
 }
 
-output "db_port" {
+output "postgresql_port" {
   description = "Port the Cloud SQL Postgres instance listens on."
   value       = module.postgresql.port
 }

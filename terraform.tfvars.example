@@ -36,17 +36,17 @@ backends = {
 
 # Optional, defaults shown. App repos consuming this shared infrastructure must be
 # configured with matching names.
-# network_name         = "tools"
-# db_instance_name     = "postgresql0"
-# redis_instance_name  = "redis0"
-# loadbalancer_name    = "tools"
+# network_name             = "tools"
+# postgresql_instance_name = "postgresql0"
+# redis_instance_name      = "redis0"
+# loadbalancer_name        = "tools"
 
 # Optional, defaults shown. Cloud SQL instance type/version and Memorystore Redis
 # instance type. Picked for lowest cost; raise these if the shared instances get
 # resource-constrained under real load.
-# db_version           = "POSTGRES_18"
-# db_tier              = "db-f1-micro"
-# db_availability_type = "ZONAL"
-# db_disk_size_gb      = 10
-# redis_tier           = "BASIC"
-# redis_memory_size_gb = 1
+# postgresql_version           = "POSTGRES_18"
+# postgresql_tier              = "db-f1-micro"
+# postgresql_availability_type = "ZONAL"
+# postgresql_disk_size_gb      = 10
+# redis_tier                   = "BASIC"
+# redis_memory_size_gb         = 1

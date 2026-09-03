@@ -14,37 +14,37 @@ variable "network_name" {
   default     = "tools"
 }
 
-variable "db_instance_name" {
+variable "postgresql_instance_name" {
   description = "Name for the shared Cloud SQL instance (see terraform.module.postgresql). App repos must use the same value."
   type        = string
   default     = "postgresql0"
 }
 
-variable "db_port" {
+variable "postgresql_port" {
   description = "Port the Cloud SQL Postgres instance listens on. Cloud SQL doesn't expose this as an attribute; fixed at 5432 for Postgres."
   type        = number
   default     = 5432
 }
 
-variable "db_version" {
+variable "postgresql_version" {
   description = "Postgres version for the shared Cloud SQL instance."
   type        = string
   default     = "POSTGRES_18"
 }
 
-variable "db_tier" {
+variable "postgresql_tier" {
   description = "Cloud SQL machine tier for the shared Postgres instance."
   type        = string
   default     = "db-f1-micro"
 }
 
-variable "db_availability_type" {
+variable "postgresql_availability_type" {
   description = "Cloud SQL availability type: ZONAL or REGIONAL (REGIONAL = HA, higher cost)."
   type        = string
   default     = "ZONAL"
 }
 
-variable "db_disk_size_gb" {
+variable "postgresql_disk_size_gb" {
   description = "Cloud SQL disk size in GB."
   type        = number
   default     = 10
