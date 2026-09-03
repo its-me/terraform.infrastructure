@@ -17,7 +17,7 @@ variable "network_name" {
 variable "db_instance_name" {
   description = "Name for the shared Cloud SQL instance (see terraform.module.postgresql). App repos must use the same value."
   type        = string
-  default     = "postgres"
+  default     = "postgresql0"
 }
 
 variable "db_version" {
@@ -47,7 +47,7 @@ variable "db_disk_size_gb" {
 variable "redis_instance_name" {
   description = "Name for the shared Memorystore Redis instance (see terraform.module.redis). App repos must use the same value."
   type        = string
-  default     = "redis"
+  default     = "redis0"
 }
 
 variable "redis_tier" {
@@ -65,7 +65,7 @@ variable "redis_memory_size_gb" {
 variable "loadbalancer_name" {
   description = "Name prefix for the shared load balancer's resources (see terraform.module.loadbalancer)."
   type        = string
-  default     = "apps"
+  default     = "tools"
 }
 
 variable "backends" {
