@@ -32,12 +32,6 @@ variable "db_tier" {
   default     = "db-f1-micro"
 }
 
-variable "db_availability_type" {
-  description = "Cloud SQL availability type: ZONAL or REGIONAL (REGIONAL = HA, higher cost)."
-  type        = string
-  default     = "ZONAL"
-}
-
 variable "db_disk_size_gb" {
   description = "Cloud SQL disk size in GB."
   type        = number

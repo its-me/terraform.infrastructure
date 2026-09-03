@@ -28,7 +28,6 @@ backends = {
 # resource-constrained under real load.
 # db_version           = "POSTGRES_18"
 # db_tier              = "db-f1-micro"
-# db_availability_type = "ZONAL"
 # db_disk_size_gb      = 10
 # redis_tier           = "BASIC"
 # redis_memory_size_gb = 1
