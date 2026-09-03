@@ -3,7 +3,7 @@
 # can't follow the network/postgresql/redis create = false pattern: the URL map's host
 # rules and the certificate's domain list must be known in full at apply time.
 module "loadbalancer" {
-  source = "git::https://github.com/its-me/terraform.module.loadbalancer.git?ref=v0.1.0"
+  source = "git::https://github.com/its-me/terraform.module.loadbalancer.git?ref=v0.1.1"
 
   project_id = var.project_id
   name       = var.loadbalancer_name

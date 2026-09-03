@@ -59,6 +59,11 @@ output "loadbalancer_name" {
 }
 
 output "load_balancer_ip" {
-  description = "Global external IP of the shared load balancer. Point an A record for every domain in var.backends at this."
+  description = "Global external IPv4 address of the shared load balancer. Point an A record for every domain in var.backends at this."
   value       = module.loadbalancer.ip_address
+}
+
+output "load_balancer_ipv6" {
+  description = "Global external IPv6 address of the shared load balancer. Point an AAAA record for every domain in var.backends at this."
+  value       = module.loadbalancer.ipv6_address
 }
