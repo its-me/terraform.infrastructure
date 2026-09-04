@@ -21,6 +21,11 @@
 project_id = ""
 region     = ""
 
+# Cloud DNS managed zone (resource name, not DNS suffix) that every domain below
+# belongs to. Must already exist -- this repo only manages record sets inside it, not
+# the zone itself.
+dns_zone_name = ""
+
 # One entry per app repo sharing the load balancer. cloud_run_service must match the
 # Cloud Run service name created by that app repo (e.g. "twenty").
 backends = {

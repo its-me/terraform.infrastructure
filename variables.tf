@@ -74,6 +74,11 @@ variable "loadbalancer_name" {
   default     = "tools"
 }
 
+variable "dns_zone_name" {
+  description = "Cloud DNS managed zone (resource name, not DNS suffix) that every domain in var.backends belongs to."
+  type        = string
+}
+
 variable "backends" {
   description = "Map of domain -> Cloud Run service to route to on the shared load balancer, keyed by the public hostname (e.g. \"crm.example.com\"). One entry per app repo sharing this load balancer."
   type = map(object({

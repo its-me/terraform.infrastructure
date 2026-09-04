@@ -67,3 +67,13 @@ output "load_balancer_ipv6" {
   description = "Global external IPv6 address of the shared load balancer. Point an AAAA record for every domain in var.backends at this."
   value       = module.loadbalancer.ipv6_address
 }
+
+output "dns_zone_name" {
+  description = "Name of the Cloud DNS managed zone every domain in var.backends is in."
+  value       = module.dns.zone_name
+}
+
+output "dns_name_servers" {
+  description = "Name servers for the DNS zone. Only relevant if the zone was just created and its registrar's NS records still need pointing here."
+  value       = module.dns.name_servers
+}
