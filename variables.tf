@@ -50,6 +50,12 @@ variable "postgresql_disk_size_gb" {
   default     = 10
 }
 
+variable "postgresql_max_connections" {
+  description = "Override for the max_connections database flag. Leave null to use Cloud SQL's memory-based default (25 for db-f1-micro). Sized for Twenty (server + worker, 10-connection pool each by default) and Outline (write pool 5 + read-only pool 10, per instance, up to 2 instances) sharing this one instance, plus reserved/internal connections."
+  type        = number
+  default     = 50
+}
+
 variable "redis_instance_name" {
   description = "Name for the shared Memorystore Redis instance (see terraform.module.redis). App repos must use the same value."
   type        = string
