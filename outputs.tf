@@ -68,12 +68,12 @@ output "load_balancer_ipv6" {
   value       = module.loadbalancer.ipv6_address
 }
 
-output "dns_zone_name" {
-  description = "Name of the Cloud DNS managed zone every domain in var.backends is in."
-  value       = module.dns.zone_name
+output "dns_zone_names" {
+  description = "Cloud DNS managed zone names in use, one per distinct zone_name in var.backends."
+  value       = { for zone, m in module.dns : zone => m.zone_name }
 }
 
 output "dns_name_servers" {
-  description = "Name servers for the DNS zone. Only relevant if the zone was just created and its registrar's NS records still need pointing here."
-  value       = module.dns.name_servers
+  description = "Name servers per DNS zone. Only relevant for a zone that was just created and whose registrar's NS records still need pointing here."
+  value       = { for zone, m in module.dns : zone => m.name_servers }
 }

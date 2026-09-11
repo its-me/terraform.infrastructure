@@ -80,16 +80,13 @@ variable "loadbalancer_name" {
   default     = "tools"
 }
 
-variable "dns_zone_name" {
-  description = "Cloud DNS managed zone (resource name, not DNS suffix) that every domain in var.backends belongs to."
-  type        = string
-}
-
 variable "backends" {
-  description = "Map of domain -> Cloud Run service to route to on the shared load balancer, keyed by the public hostname (e.g. \"crm.example.com\"). One entry per app repo sharing this load balancer."
+  description = "Map of domain -> backend to route to on the shared load balancer, keyed by the public hostname (e.g. \"crm.example.com\"). One entry per app repo sharing this load balancer. zone_name is the Cloud DNS managed zone (resource name, not DNS suffix) that domain belongs to -- domains on different zones are fine, one google_dns_managed_zone lookup happens per distinct zone_name. Each entry needs either cloud_run_service + region (this repo creates the NEG + backend service, e.g. twenty/outline), or backend_service_id (an already-created backend service owned by the app's own repo/state, e.g. landing) -- see terraform.module.loadbalancer's backends variable."
   type = map(object({
-    cloud_run_service = string
-    region            = string
+    cloud_run_service  = optional(string)
+    region             = optional(string)
+    backend_service_id = optional(string)
+    zone_name          = string
   }))
 }
 

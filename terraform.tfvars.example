@@ -21,21 +21,29 @@
 project_id = ""
 region     = ""
 
-# Cloud DNS managed zone (resource name, not DNS suffix) that every domain below
-# belongs to. Must already exist -- this repo only manages record sets inside it, not
-# the zone itself.
-dns_zone_name = ""
-
-# One entry per app repo sharing the load balancer. cloud_run_service must match the
-# Cloud Run service name created by that app repo (e.g. "twenty").
+# One entry per app repo sharing the load balancer. zone_name is the Cloud DNS managed
+# zone (resource name, not DNS suffix) that domain belongs to -- it must already
+# exist, this repo only manages record sets inside it, not the zone itself. Domains
+# can span multiple zones. Each entry needs either:
+#   - cloud_run_service + region: this repo creates the NEG + backend service, and
+#     cloud_run_service must match the Cloud Run service name created by that app repo.
+#   - backend_service_id: an already-created backend service owned by the app's own
+#     repo/state (its output, pasted in here) -- use this when that app repo creates
+#     its own NEG + backend service to stay independent of this repo.
 backends = {
   "crm.example.com" = {
     cloud_run_service = "twenty"
     region            = ""
+    zone_name         = ""
   }
   "docs.example.com" = {
     cloud_run_service = "outline"
     region            = ""
+    zone_name         = ""
+  }
+  "landing.example.com" = {
+    backend_service_id = ""
+    zone_name          = ""
   }
 }
 
