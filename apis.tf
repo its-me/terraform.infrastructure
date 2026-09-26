@@ -1,12 +1,12 @@
 locals {
-  required_apis = [
+  required_apis = compact([
     "compute.googleapis.com",
-    "servicenetworking.googleapis.com",
-    "vpcaccess.googleapis.com",
-    "sqladmin.googleapis.com",
-    "redis.googleapis.com",
-    "iap.googleapis.com",
-  ]
+    local.deployment.create_private_service_access ? "servicenetworking.googleapis.com" : "",
+    local.deployment.create_vpc_connector ? "vpcaccess.googleapis.com" : "",
+    local.deployment.create_postgresql ? "sqladmin.googleapis.com" : "",
+    local.deployment.create_redis ? "redis.googleapis.com" : "",
+    length(local.deployment.compute_instances) > 0 ? "iap.googleapis.com" : "",
+  ])
 }
 
 resource "google_project_service" "apis" {
