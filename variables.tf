@@ -74,16 +74,12 @@ variable "redis_memory_size_gb" {
   default     = 1
 }
 
-variable "compute_instance_name" {
-  description = "Name of the initial Compute Engine instance."
-  type        = string
-  default     = "compute0"
-}
-
-variable "compute_machine_type" {
-  description = "Machine type of the initial Compute Engine instance. e2-micro (2 shared vCPUs, 1 GB) is the smallest available."
-  type        = string
-  default     = "e2-micro"
+variable "compute_instances" {
+  description = "Compute Engine instances to create, keyed by instance name. machine_type defaults to e2-micro (2 shared vCPUs, 1 GB), the smallest available."
+  type = map(object({
+    machine_type = optional(string, "e2-micro")
+  }))
+  default = {}
 }
 
 variable "loadbalancer_name" {

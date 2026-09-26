@@ -53,19 +53,14 @@ output "redis_port" {
   value       = module.redis.port
 }
 
-output "compute_instance_name" {
-  description = "Name of the initial Compute Engine instance."
-  value       = module.vm.name
+output "compute_instance_zones" {
+  description = "Map of Compute Engine instance name -> zone."
+  value       = { for name, vm in module.vm : name => vm.zone }
 }
 
-output "compute_instance_zone" {
-  description = "Zone of the initial Compute Engine instance."
-  value       = module.vm.zone
-}
-
-output "compute_instance_internal_ip" {
-  description = "Internal IPv4 address of the initial Compute Engine instance."
-  value       = module.vm.internal_ip
+output "compute_instance_internal_ips" {
+  description = "Map of Compute Engine instance name -> internal IPv4 address."
+  value       = { for name, vm in module.vm : name => vm.internal_ip }
 }
 
 output "loadbalancer_name" {
