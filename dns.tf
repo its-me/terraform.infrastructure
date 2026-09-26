@@ -1,10 +1,10 @@
-# Points every domain in var.backends at the shared load balancer. Domains can belong
+# Points every domain in local.deployment.backends at the shared load balancer. Domains can belong
 # to different Cloud DNS zones (one module.dns instance per distinct zone_name); each
 # instance only manages the record sets for domains in its own zone.
 locals {
   domains_by_zone = {
-    for zone in distinct([for b in var.backends : b.zone_name]) :
-    zone => [for domain, b in var.backends : domain if b.zone_name == zone]
+    for zone in distinct([for b in local.deployment.backends : b.zone_name]) :
+    zone => [for domain, b in local.deployment.backends : domain if b.zone_name == zone]
   }
 }
 

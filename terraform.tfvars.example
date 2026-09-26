@@ -1,84 +1,99 @@
-# Copy to <deployment>.tfvars (one file per independent part, e.g. tools.tfvars,
-# wheelers.tfvars, landing.tfvars) and fill in your own values. Each part keeps its
-# own state in a Terraform workspace named after `deployment`:
-#   terraform workspace select <deployment> || terraform workspace new <deployment>
-#   terraform apply -var-file=<deployment>.tfvars
+# Copy to terraform.tfvars and fill in your own values. Terraform loads it
+# automatically. Each entry in `deployments` is an independent part with its own
+# state, selected by the Terraform workspace of the same name:
+#   terraform workspace select <name> || terraform workspace new <name>
+#   terraform apply
 
-# IMPORTANT: this is shared infrastructure (network, Cloud SQL, Redis, load balancer)
-# consumed by every app repo (terraform.twenty, terraform.outline, ...). Terraform has
-# no visibility across repos, so it cannot enforce this itself:
+# IMPORTANT: a part with Cloud SQL, Redis or the load balancer is shared
+# infrastructure consumed by app repos (terraform.twenty, terraform.outline, ...).
+# Terraform has no visibility across repos, so it cannot enforce this itself:
 #
-#   Destroy order: all app repos FIRST, then this repo.
+#   Destroy order: all app repos using a part FIRST, then that part.
 #
-# Destroying this repo while an app repo still exists strands that app (its Cloud Run
-# service loses its DB/Redis/network). It can also leave the shared VPC peering
+# Destroying a part while an app repo still uses it strands that app (its Cloud Run
+# service loses its DB/Redis/network). It can also leave the VPC peering
 # half-torn-down: Cloud SQL/Redis instances must be gone before the
 # google_service_networking_connection can be deleted, and GCP needs a few minutes
 # after that to clean up the peering's auto-generated routes. If `terraform destroy`
-# here fails with "execution halted" on the network/service_networking_connection, or
+# fails with "execution halted" on the network/service_networking_connection, or
 # the GCP Console refuses to delete the network with "the auto-generated peering route
 # cannot be deleted", wait ~10-15 minutes and retry `terraform destroy` -- do not try to
 # delete the peering or network from the Console (it cannot remove a
 # Service-Networking-managed peering; only `terraform destroy` or
 # `gcloud services vpc-peerings delete` can).
 
-deployment = ""
-
 project_id = ""
 region     = ""
 
-# Optional, defaults shown. Turn off what this part doesn't need: the VPC connector
-# is only for Cloud Run, and private service access is only for Cloud SQL/Redis.
-# create_private_service_access = true
-# create_vpc_connector          = true
-# create_postgresql             = true
-# create_redis                  = true
+deployments = {
+  # A shared part: network, Cloud SQL, Redis, and a load balancer in front of the
+  # app repos' Cloud Run services.
+  tools = {
+    # Optional, defaults shown. App repos consuming this part must be configured with
+    # matching names. network_name defaults to the workspace name.
+    # network_name             = "tools"
+    # postgresql_instance_name = "postgresql0"
+    # redis_instance_name      = "redis0"
+    # loadbalancer_name        = "tools"
 
-# Optional (default {}). The load balancer and DNS records are only created when this
-# is non-empty. One entry per app repo sharing the load balancer. zone_name is the
-# Cloud DNS managed zone (resource name, not DNS suffix) that domain belongs to -- it
-# must already exist, this repo only manages record sets inside it, not the zone
-# itself. Domains can span multiple zones. Each entry needs either:
-#   - cloud_run_service + region: this repo creates the NEG + backend service, and
-#     cloud_run_service must match the Cloud Run service name created by that app repo.
-#   - backend_service_id: an already-created backend service owned by the app's own
-#     repo/state (its output, pasted in here) -- use this when that app repo creates
-#     its own NEG + backend service to stay independent of this repo.
-backends = {
-  "crm.example.com" = {
-    cloud_run_service = "twenty"
-    region            = ""
-    zone_name         = ""
+    # Optional, defaults shown. Turn off what this part doesn't need: the VPC
+    # connector is only for Cloud Run, and private service access is only for Cloud
+    # SQL/Redis.
+    # create_private_service_access = true
+    # create_vpc_connector          = true
+    # create_postgresql             = true
+    # create_redis                  = true
+
+    # Optional, defaults shown. Cloud SQL and Memorystore Redis sizing. Picked for
+    # lowest cost; raise these if the instances get resource-constrained under load.
+    # postgresql_version           = "POSTGRES_18"
+    # postgresql_tier              = "db-f1-micro"
+    # postgresql_availability_type = "ZONAL"
+    # postgresql_disk_size_gb      = 10
+    # postgresql_max_connections   = 50
+    # redis_tier                   = "BASIC"
+    # redis_memory_size_gb         = 1
+
+    # Optional (default {}). The load balancer and DNS records are only created when
+    # this is non-empty. zone_name is the Cloud DNS managed zone (resource name, not
+    # DNS suffix) that domain belongs to -- it must already exist, this repo only
+    # manages record sets inside it. Domains can span multiple zones. Each entry
+    # needs either:
+    #   - cloud_run_service + region: this repo creates the NEG + backend service, and
+    #     cloud_run_service must match the Cloud Run service name created by that app
+    #     repo.
+    #   - backend_service_id: an already-created backend service owned by the app's
+    #     own repo/state (its output, pasted in here) -- use this when that app repo
+    #     creates its own NEG + backend service to stay independent of this repo.
+    backends = {
+      "crm.example.com" = {
+        cloud_run_service = "twenty"
+        region            = ""
+        zone_name         = ""
+      }
+      "docs.example.com" = {
+        cloud_run_service = "outline"
+        region            = ""
+        zone_name         = ""
+      }
+      "landing.example.com" = {
+        backend_service_id = ""
+        zone_name          = ""
+      }
+    }
   }
-  "docs.example.com" = {
-    cloud_run_service = "outline"
-    region            = ""
-    zone_name         = ""
+
+  # A VM-only part on its own network, sharing nothing with the other parts.
+  vms = {
+    create_private_service_access = false
+    create_vpc_connector          = false
+    create_postgresql             = false
+    create_redis                  = false
+
+    # Compute Engine instances, keyed by name. Each is e2-micro unless machine_type
+    # is set.
+    compute_instances = {
+      "vm0" = {}
+    }
   }
-  "landing.example.com" = {
-    backend_service_id = ""
-    zone_name          = ""
-  }
-}
-
-# Optional, defaults shown. App repos consuming this shared infrastructure must be
-# configured with matching names.
-# network_name             = "tools"
-# postgresql_instance_name = "postgresql0"
-# redis_instance_name      = "redis0"
-# loadbalancer_name        = "tools"
-
-# Optional, defaults shown. Cloud SQL instance type/version and Memorystore Redis
-# instance type. Picked for lowest cost; raise these if the shared instances get
-# resource-constrained under real load.
-# postgresql_version           = "POSTGRES_18"
-# postgresql_tier              = "db-f1-micro"
-# postgresql_availability_type = "ZONAL"
-# postgresql_disk_size_gb      = 10
-# redis_tier                   = "BASIC"
-# redis_memory_size_gb         = 1
-
-# Compute Engine instances, keyed by name. Each is e2-micro unless machine_type is set.
-compute_instances = {
-  "vm0" = {}
 }

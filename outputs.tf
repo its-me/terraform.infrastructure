@@ -64,22 +64,22 @@ output "compute_instance_internal_ips" {
 }
 
 output "loadbalancer_name" {
-  description = "Name prefix of the shared load balancer's resources. Null if var.backends is empty."
-  value       = length(var.backends) > 0 ? var.loadbalancer_name : null
+  description = "Name prefix of the shared load balancer's resources. Null if local.deployment.backends is empty."
+  value       = length(local.deployment.backends) > 0 ? local.deployment.loadbalancer_name : null
 }
 
 output "load_balancer_ip" {
-  description = "Global external IPv4 address of the shared load balancer (null if var.backends is empty). Point an A record for every domain in var.backends at this."
+  description = "Global external IPv4 address of the shared load balancer (null if local.deployment.backends is empty). Point an A record for every domain in local.deployment.backends at this."
   value       = one(module.loadbalancer[*].ip_address)
 }
 
 output "load_balancer_ipv6" {
-  description = "Global external IPv6 address of the shared load balancer. Point an AAAA record for every domain in var.backends at this."
+  description = "Global external IPv6 address of the shared load balancer. Point an AAAA record for every domain in local.deployment.backends at this."
   value       = one(module.loadbalancer[*].ipv6_address)
 }
 
 output "dns_zone_names" {
-  description = "Cloud DNS managed zone names in use, one per distinct zone_name in var.backends."
+  description = "Cloud DNS managed zone names in use, one per distinct zone_name in local.deployment.backends."
   value       = { for zone, m in module.dns : zone => m.zone_name }
 }
 
