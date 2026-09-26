@@ -53,6 +53,21 @@ output "redis_port" {
   value       = module.redis.port
 }
 
+output "compute_instance_name" {
+  description = "Name of the initial Compute Engine instance."
+  value       = module.vm.name
+}
+
+output "compute_instance_zone" {
+  description = "Zone of the initial Compute Engine instance."
+  value       = module.vm.zone
+}
+
+output "compute_instance_internal_ip" {
+  description = "Internal IPv4 address of the initial Compute Engine instance."
+  value       = module.vm.internal_ip
+}
+
 output "loadbalancer_name" {
   description = "Name prefix of the shared load balancer's resources."
   value       = var.loadbalancer_name

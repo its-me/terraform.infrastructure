@@ -53,6 +53,7 @@ backends = {
 # postgresql_instance_name = "postgresql0"
 # redis_instance_name      = "redis0"
 # loadbalancer_name        = "tools"
+# compute_instance_name    = "compute0"
 
 # Optional, defaults shown. Cloud SQL instance type/version and Memorystore Redis
 # instance type. Picked for lowest cost; raise these if the shared instances get
@@ -63,3 +64,4 @@ backends = {
 # postgresql_disk_size_gb      = 10
 # redis_tier                   = "BASIC"
 # redis_memory_size_gb         = 1
+# compute_machine_type         = "e2-micro"

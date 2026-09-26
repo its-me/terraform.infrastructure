@@ -5,6 +5,7 @@ locals {
     "vpcaccess.googleapis.com",
     "sqladmin.googleapis.com",
     "redis.googleapis.com",
+    "iap.googleapis.com",
   ]
 }
 
