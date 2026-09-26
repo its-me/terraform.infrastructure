@@ -3,6 +3,7 @@
 # DB index.
 module "redis" {
   source = "git::https://github.com/its-me/terraform.module.redis.git?ref=v0.1.0"
+  count  = var.create_redis ? 1 : 0
 
   project_id = var.project_id
   region     = var.region
@@ -15,4 +16,9 @@ module "redis" {
   labels         = var.labels
 
   depends_on = [module.network]
+}
+
+moved {
+  from = module.redis
+  to   = module.redis[0]
 }

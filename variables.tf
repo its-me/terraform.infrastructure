@@ -1,3 +1,8 @@
+variable "deployment" {
+  description = "Which part of the infrastructure this tfvars file describes (e.g. \"tools\", \"wheelers\", \"landing\"). Must match the selected Terraform workspace, so each part keeps its own state."
+  type        = string
+}
+
 variable "project_id" {
   description = "GCP project ID to deploy shared infrastructure into."
   type        = string
@@ -12,6 +17,30 @@ variable "network_name" {
   description = "Name for the shared VPC network/subnet/connector (see terraform.module.network). App repos must use the same value."
   type        = string
   default     = "tools"
+}
+
+variable "create_private_service_access" {
+  description = "Whether the network gets a servicenetworking peering. Required when create_postgresql or create_redis is true."
+  type        = bool
+  default     = true
+}
+
+variable "create_vpc_connector" {
+  description = "Whether the network gets a Serverless VPC Access connector (2+ always-on VMs). Only needed when Cloud Run services use this network."
+  type        = bool
+  default     = true
+}
+
+variable "create_postgresql" {
+  description = "Whether to create the Cloud SQL instance."
+  type        = bool
+  default     = true
+}
+
+variable "create_redis" {
+  description = "Whether to create the Memorystore Redis instance."
+  type        = bool
+  default     = true
 }
 
 variable "postgresql_instance_name" {
@@ -75,7 +104,7 @@ variable "redis_memory_size_gb" {
 }
 
 variable "compute_instances" {
-  description = "Compute Engine instances to create, keyed by instance name. machine_type defaults to e2-micro (2 shared vCPUs, 1 GB), the smallest available."
+  description = "Compute Engine instances to create on this network, keyed by instance name. machine_type defaults to e2-micro (2 shared vCPUs, 1 GB), the smallest available."
   type = map(object({
     machine_type = optional(string, "e2-micro")
   }))
@@ -96,6 +125,7 @@ variable "backends" {
     backend_service_id = optional(string)
     zone_name          = string
   }))
+  default = {}
 }
 
 variable "labels" {

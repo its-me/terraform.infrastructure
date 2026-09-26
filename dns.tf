@@ -18,12 +18,12 @@ module "dns" {
     { for domain in each.value : "${replace(domain, ".", "-")}-a" => {
       name    = domain
       type    = "A"
-      rrdatas = [module.loadbalancer.ip_address]
+      rrdatas = [module.loadbalancer[0].ip_address]
     } },
     { for domain in each.value : "${replace(domain, ".", "-")}-aaaa" => {
       name    = domain
       type    = "AAAA"
-      rrdatas = [module.loadbalancer.ipv6_address]
+      rrdatas = [module.loadbalancer[0].ipv6_address]
     } },
   )
 

@@ -1,4 +1,8 @@
-# Copy to terraform.tfvars and fill in your own values.
+# Copy to <deployment>.tfvars (one file per independent part, e.g. tools.tfvars,
+# wheelers.tfvars, landing.tfvars) and fill in your own values. Each part keeps its
+# own state in a Terraform workspace named after `deployment`:
+#   terraform workspace select <deployment> || terraform workspace new <deployment>
+#   terraform apply -var-file=<deployment>.tfvars
 
 # IMPORTANT: this is shared infrastructure (network, Cloud SQL, Redis, load balancer)
 # consumed by every app repo (terraform.twenty, terraform.outline, ...). Terraform has
@@ -18,13 +22,23 @@
 # Service-Networking-managed peering; only `terraform destroy` or
 # `gcloud services vpc-peerings delete` can).
 
+deployment = ""
+
 project_id = ""
 region     = ""
 
-# One entry per app repo sharing the load balancer. zone_name is the Cloud DNS managed
-# zone (resource name, not DNS suffix) that domain belongs to -- it must already
-# exist, this repo only manages record sets inside it, not the zone itself. Domains
-# can span multiple zones. Each entry needs either:
+# Optional, defaults shown. Turn off what this part doesn't need: the VPC connector
+# is only for Cloud Run, and private service access is only for Cloud SQL/Redis.
+# create_private_service_access = true
+# create_vpc_connector          = true
+# create_postgresql             = true
+# create_redis                  = true
+
+# Optional (default {}). The load balancer and DNS records are only created when this
+# is non-empty. One entry per app repo sharing the load balancer. zone_name is the
+# Cloud DNS managed zone (resource name, not DNS suffix) that domain belongs to -- it
+# must already exist, this repo only manages record sets inside it, not the zone
+# itself. Domains can span multiple zones. Each entry needs either:
 #   - cloud_run_service + region: this repo creates the NEG + backend service, and
 #     cloud_run_service must match the Cloud Run service name created by that app repo.
 #   - backend_service_id: an already-created backend service owned by the app's own

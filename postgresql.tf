@@ -2,6 +2,7 @@
 # create = false to read it back, each managing its own database/user on top.
 module "postgresql" {
   source = "git::https://github.com/its-me/terraform.module.postgresql.git?ref=v0.1.8"
+  count  = var.create_postgresql ? 1 : 0
 
   project_id        = var.project_id
   region            = var.region
@@ -17,4 +18,9 @@ module "postgresql" {
   labels            = var.labels
 
   depends_on = [module.network]
+}
+
+moved {
+  from = module.postgresql
+  to   = module.postgresql[0]
 }
