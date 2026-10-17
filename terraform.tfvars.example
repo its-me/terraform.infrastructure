@@ -36,13 +36,12 @@ deployments = {
     # redis_instance_name      = "redis0"
     # loadbalancer_name        = "tools"
 
-    # Optional, defaults shown. Turn off what this part doesn't need: the VPC
-    # connector is only for Cloud Run, and private service access is only for Cloud
-    # SQL/Redis.
-    # create_private_service_access = true
-    # create_vpc_connector          = true
-    # create_postgresql             = true
-    # create_redis                  = true
+    # All default to false; turn on what this part needs. The VPC connector is only
+    # for Cloud Run, and private service access is required by Cloud SQL/Redis.
+    create_private_service_access = true
+    create_vpc_connector          = true
+    create_postgresql             = true
+    create_redis                  = true
 
     # Optional, defaults shown. Cloud SQL and Memorystore Redis sizing. Picked for
     # lowest cost; raise these if the instances get resource-constrained under load.
@@ -85,11 +84,6 @@ deployments = {
 
   # A VM-only part on its own network, sharing nothing with the other parts.
   vms = {
-    create_private_service_access = false
-    create_vpc_connector          = false
-    create_postgresql             = false
-    create_redis                  = false
-
     # Compute Engine instances, keyed by name. Each is e2-micro unless machine_type
     # is set. public = true gives the VM a static public IP and opens TCP 80/443, so
     # it's served directly (TLS on the VM) instead of through the load balancer.

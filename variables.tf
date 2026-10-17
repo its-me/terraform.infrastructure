@@ -17,12 +17,12 @@ variable "deployments" {
     Every setting is optional; defaults are in parentheses.
     - network_name (the workspace name): VPC network/subnet/connector name, see
       terraform.module.network. App repos must use the same value.
-    - create_private_service_access (true): servicenetworking peering. Required by
+    - create_private_service_access (false): servicenetworking peering. Required by
       create_postgresql and create_redis.
-    - create_vpc_connector (true): Serverless VPC Access connector. Runs 2+ VMs at all
+    - create_vpc_connector (false): Serverless VPC Access connector. Runs 2+ VMs at all
       times; only needed when Cloud Run services use this network.
-    - create_postgresql (true), create_redis (true): create the Cloud SQL / Memorystore
-      Redis instance.
+    - create_postgresql (false), create_redis (false): create the Cloud SQL /
+      Memorystore Redis instance.
     - postgresql_instance_name ("postgresql0"), postgresql_version ("POSTGRES_18"),
       postgresql_tier ("db-f1-micro"), postgresql_availability_type ("ZONAL";
       REGIONAL = HA, higher cost), postgresql_disk_size_gb (10). App repos must use
@@ -49,10 +49,10 @@ variable "deployments" {
   EOT
   type = map(object({
     network_name                  = optional(string)
-    create_private_service_access = optional(bool, true)
-    create_vpc_connector          = optional(bool, true)
-    create_postgresql             = optional(bool, true)
-    create_redis                  = optional(bool, true)
+    create_private_service_access = optional(bool, false)
+    create_vpc_connector          = optional(bool, false)
+    create_postgresql             = optional(bool, false)
+    create_redis                  = optional(bool, false)
 
     postgresql_instance_name     = optional(string, "postgresql0")
     postgresql_port              = optional(number, 5432)
