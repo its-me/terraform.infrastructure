@@ -58,6 +58,11 @@ output "compute_instance_zones" {
   value       = { for name, vm in module.vm : name => vm.zone }
 }
 
+output "compute_instance_external_ips" {
+  description = "Map of Compute Engine instance name -> static public IPv4 address (null for non-public instances). Point the instance's DNS A record here."
+  value       = { for name, vm in module.vm : name => vm.external_ip }
+}
+
 output "compute_instance_internal_ips" {
   description = "Map of Compute Engine instance name -> internal IPv4 address."
   value       = { for name, vm in module.vm : name => vm.internal_ip }
