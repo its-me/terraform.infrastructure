@@ -3,7 +3,7 @@
 # than through the load balancer (TLS terminates on the VM). SSH is via IAP only:
 #   gcloud compute ssh <name> --zone <zone> --tunnel-through-iap
 module "vm" {
-  source   = "git::https://github.com/its-me/terraform.module.vm.git?ref=v0.2.0"
+  source   = "git::https://github.com/its-me/terraform.module.vm.git?ref=v0.3.0"
   for_each = local.deployment.compute_instances
 
   project_id   = var.project_id
