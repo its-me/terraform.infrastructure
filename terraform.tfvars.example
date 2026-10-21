@@ -89,8 +89,17 @@ deployments = {
     # it's served directly (TLS on the VM) instead of through the load balancer.
     # ssh_source_ranges allows SSH to that public IP from the given CIDRs (e.g.
     # ["0.0.0.0/0"] for anywhere); SSH via IAP works without it.
+    # ssh_keys maps Linux username -> public key (e.g. from `ssh-keygen -t ed25519`).
+    # Setting it turns OS Login off for that VM so only these keys can log in; leave
+    # it out to keep OS Login, where access follows IAM roles.
     compute_instances = {
-      "vm0" = { public = true }
+      "vm0" = {
+        public            = true
+        ssh_source_ranges = ["0.0.0.0/0"]
+        ssh_keys = {
+          deploy = "ssh-ed25519 AAAA... deploy@laptop"
+        }
+      }
     }
   }
 }

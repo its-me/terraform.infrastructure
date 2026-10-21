@@ -41,6 +41,9 @@ variable "deployments" {
       internet, so it's served directly instead of through the load balancer.
       ssh_source_ranges ([]) allows SSH (TCP 22) to the public IP from these CIDRs;
       SSH via IAP works regardless.
+      ssh_keys ({}) maps Linux username -> SSH public key to install on the VM. Setting
+      any turns OS Login off for that VM, so only these keys can log in; empty keeps
+      OS Login (access via IAM roles).
     - loadbalancer_name ("tools"): name prefix for the load balancer's resources.
     - backends ({}): domain -> backend on the load balancer, keyed by public hostname.
       The load balancer and DNS records are only created when this is non-empty.
@@ -72,6 +75,7 @@ variable "deployments" {
       machine_type      = optional(string, "e2-micro")
       public            = optional(bool, false)
       ssh_source_ranges = optional(list(string), [])
+      ssh_keys          = optional(map(string), {})
     })), {})
 
     loadbalancer_name = optional(string, "tools")
