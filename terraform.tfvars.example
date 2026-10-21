@@ -87,6 +87,8 @@ deployments = {
     # Compute Engine instances, keyed by name. Each is e2-micro unless machine_type
     # is set. public = true gives the VM a static public IP and opens TCP 80/443, so
     # it's served directly (TLS on the VM) instead of through the load balancer.
+    # ssh_source_ranges allows SSH to that public IP from the given CIDRs (e.g.
+    # ["0.0.0.0/0"] for anywhere); SSH via IAP works without it.
     compute_instances = {
       "vm0" = { public = true }
     }

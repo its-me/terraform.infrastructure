@@ -14,6 +14,7 @@ module "vm" {
 
   static_external_ip = each.value.public
   allow_http_https   = each.value.public
+  ssh_source_ranges  = each.value.ssh_source_ranges
   labels             = var.labels
 
   depends_on = [google_project_service.apis]

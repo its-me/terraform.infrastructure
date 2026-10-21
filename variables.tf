@@ -39,6 +39,8 @@ variable "deployments" {
       machine_type defaults to e2-micro (2 shared vCPUs, 1 GB), the smallest available.
       public (false) gives the VM a static public IP and opens TCP 80/443 to the
       internet, so it's served directly instead of through the load balancer.
+      ssh_source_ranges ([]) allows SSH (TCP 22) to the public IP from these CIDRs;
+      SSH via IAP works regardless.
     - loadbalancer_name ("tools"): name prefix for the load balancer's resources.
     - backends ({}): domain -> backend on the load balancer, keyed by public hostname.
       The load balancer and DNS records are only created when this is non-empty.
@@ -67,8 +69,9 @@ variable "deployments" {
     redis_memory_size_gb = optional(number, 1)
 
     compute_instances = optional(map(object({
-      machine_type = optional(string, "e2-micro")
-      public       = optional(bool, false)
+      machine_type      = optional(string, "e2-micro")
+      public            = optional(bool, false)
+      ssh_source_ranges = optional(list(string), [])
     })), {})
 
     loadbalancer_name = optional(string, "tools")
