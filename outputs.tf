@@ -63,6 +63,11 @@ output "compute_instance_external_ips" {
   value       = { for name, vm in module.vm : name => vm.external_ip }
 }
 
+output "compute_instance_external_ipv6s" {
+  description = "Map of Compute Engine instance name -> static public IPv6 address (null for non-public or ipv6 = false instances). Point the instance's DNS AAAA record here."
+  value       = { for name, vm in module.vm : name => vm.external_ipv6 }
+}
+
 output "compute_instance_internal_ips" {
   description = "Map of Compute Engine instance name -> internal IPv4 address."
   value       = { for name, vm in module.vm : name => vm.internal_ip }

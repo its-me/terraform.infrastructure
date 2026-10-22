@@ -39,8 +39,10 @@ variable "deployments" {
       machine_type defaults to e2-micro (2 shared vCPUs, 1 GB), the smallest available.
       public (false) gives the VM a static public IP and opens TCP 80/443 to the
       internet, so it's served directly instead of through the load balancer.
-      ssh_source_ranges ([]) allows SSH (TCP 22) to the public IP from these CIDRs;
-      SSH via IAP works regardless.
+      ipv6 (true) adds a static public IPv6 address alongside it and opens 80/443 to
+      ::/0 too; set false for IPv4 only.
+      ssh_source_ranges ([]) allows SSH (TCP 22) to the public IP from these CIDRs,
+      IPv4 and/or IPv6 (e.g. ["0.0.0.0/0", "::/0"]); SSH via IAP works regardless.
       ssh_keys ({}) maps Linux username -> SSH public key to install on the VM. Setting
       any turns OS Login off for that VM, so only these keys can log in; empty keeps
       OS Login (access via IAM roles).
@@ -74,6 +76,7 @@ variable "deployments" {
     compute_instances = optional(map(object({
       machine_type      = optional(string, "e2-micro")
       public            = optional(bool, false)
+      ipv6              = optional(bool, true)
       ssh_source_ranges = optional(list(string), [])
       ssh_keys          = optional(map(string), {})
     })), {})
