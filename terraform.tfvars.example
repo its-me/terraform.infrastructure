@@ -85,8 +85,9 @@ deployments = {
   # A VM-only part on its own network, sharing nothing with the other parts.
   vms = {
     # Compute Engine instances, keyed by name. Each is e2-micro unless machine_type
-    # is set. public = true gives the VM a static public IP and opens TCP 80/443, so
-    # it's served directly (TLS on the VM) instead of through the load balancer.
+    # is set. public = true gives the VM a static public IP and opens TCP 80/443 and
+    # ICMP (ping), so it's served directly (TLS on the VM) instead of through the
+    # load balancer.
     # It also gets a static public IPv6 unless ipv6 = false.
     # ssh_source_ranges allows SSH to that public IP from the given CIDRs (e.g.
     # ["0.0.0.0/0", "::/0"] for anywhere over IPv4 and IPv6); SSH via IAP works without it.
@@ -96,7 +97,7 @@ deployments = {
     compute_instances = {
       "vm0" = {
         public            = true
-        ssh_source_ranges = ["0.0.0.0/0"]
+        ssh_source_ranges = ["0.0.0.0/0", "::/0"]
         ssh_keys = {
           deploy = "ssh-ed25519 AAAA... deploy@laptop"
         }

@@ -37,8 +37,8 @@ variable "deployments" {
       redis_memory_size_gb (1). App repos must use the same instance name.
     - compute_instances ({}): VMs on this network, keyed by instance name.
       machine_type defaults to e2-micro (2 shared vCPUs, 1 GB), the smallest available.
-      public (false) gives the VM a static public IP and opens TCP 80/443 to the
-      internet, so it's served directly instead of through the load balancer.
+      public (false) gives the VM a static public IP and opens TCP 80/443 and ICMP
+      (ping) to the internet, so it's served directly instead of through the load balancer.
       ipv6 (true) adds a static public IPv6 address alongside it and opens 80/443 to
       ::/0 too; set false for IPv4 only.
       ssh_source_ranges ([]) allows SSH (TCP 22) to the public IP from these CIDRs,
