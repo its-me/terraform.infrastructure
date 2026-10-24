@@ -46,6 +46,10 @@ variable "deployments" {
       ssh_keys ({}) maps Linux username -> SSH public key to install on the VM. Setting
       any turns OS Login off for that VM, so only these keys can log in; empty keeps
       OS Login (access via IAM roles).
+      snapshots (null) takes scheduled boot disk snapshots: {} for daily at 03:00 UTC
+      kept 7 days, or override days_in_cycle, start_time ("HH:00" UTC),
+      retention_days and storage_locations (default: nearest multi-region). Snapshots
+      survive the VM being deleted or rebuilt.
     - loadbalancer_name ("tools"): name prefix for the load balancer's resources.
     - backends ({}): domain -> backend on the load balancer, keyed by public hostname.
       The load balancer and DNS records are only created when this is non-empty.
@@ -79,6 +83,12 @@ variable "deployments" {
       ipv6              = optional(bool, true)
       ssh_source_ranges = optional(list(string), [])
       ssh_keys          = optional(map(string), {})
+      snapshots = optional(object({
+        days_in_cycle     = optional(number, 1)
+        start_time        = optional(string, "03:00")
+        retention_days    = optional(number, 7)
+        storage_locations = optional(list(string))
+      }))
     })), {})
 
     loadbalancer_name = optional(string, "tools")

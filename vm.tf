@@ -6,7 +6,7 @@
 # or, with ssh_source_ranges + ssh_keys set, directly with your own key:
 #   ssh -i ~/.ssh/<key> <user>@<external ip>
 module "vm" {
-  source   = "git::https://github.com/its-me/terraform.module.vm.git?ref=v0.6.0"
+  source   = "git::https://github.com/its-me/terraform.module.vm.git?ref=v0.7.0"
   for_each = local.deployment.compute_instances
 
   project_id   = var.project_id
@@ -21,6 +21,7 @@ module "vm" {
   allow_icmp         = each.value.public
   ssh_source_ranges  = each.value.ssh_source_ranges
   ssh_keys           = each.value.ssh_keys
+  snapshot_schedule  = each.value.snapshots
   labels             = var.labels
 
   depends_on = [google_project_service.apis]

@@ -94,6 +94,9 @@ deployments = {
     # ssh_keys maps Linux username -> public key (e.g. from `ssh-keygen -t ed25519`).
     # Setting it turns OS Login off for that VM so only these keys can log in; leave
     # it out to keep OS Login, where access follows IAM roles.
+    # snapshots takes scheduled boot disk snapshots: {} means daily at 03:00 UTC, kept
+    # 7 days; days_in_cycle, start_time, retention_days and storage_locations override
+    # that. Leave it out for no snapshots.
     compute_instances = {
       "vm0" = {
         public            = true
@@ -101,6 +104,7 @@ deployments = {
         ssh_keys = {
           deploy = "ssh-ed25519 AAAA... deploy@laptop"
         }
+        snapshots = { retention_days = 30 }
       }
     }
   }
