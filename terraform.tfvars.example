@@ -97,6 +97,8 @@ deployments = {
     # snapshots takes scheduled boot disk snapshots: {} means daily at 03:00 UTC, kept
     # 7 days; days_in_cycle, start_time, retention_days and storage_locations override
     # that. Leave it out for no snapshots.
+    # deletion_protection = true blocks deleting the VM (including a Terraform destroy
+    # or replacement) until it's set back to false and applied.
     compute_instances = {
       "vm0" = {
         public            = true
@@ -104,7 +106,8 @@ deployments = {
         ssh_keys = {
           deploy = "ssh-ed25519 AAAA... deploy@laptop"
         }
-        snapshots = { retention_days = 30 }
+        snapshots           = { retention_days = 30 }
+        deletion_protection = true
       }
     }
   }

@@ -50,6 +50,8 @@ variable "deployments" {
       kept 7 days, or override days_in_cycle, start_time ("HH:00" UTC),
       retention_days and storage_locations (default: nearest multi-region). Snapshots
       survive the VM being deleted or rebuilt.
+      deletion_protection (false) blocks deleting the VM, including a Terraform
+      destroy or replacement, until it's set back to false and applied.
     - loadbalancer_name ("tools"): name prefix for the load balancer's resources.
     - backends ({}): domain -> backend on the load balancer, keyed by public hostname.
       The load balancer and DNS records are only created when this is non-empty.
@@ -78,11 +80,12 @@ variable "deployments" {
     redis_memory_size_gb = optional(number, 1)
 
     compute_instances = optional(map(object({
-      machine_type      = optional(string, "e2-micro")
-      public            = optional(bool, false)
-      ipv6              = optional(bool, true)
-      ssh_source_ranges = optional(list(string), [])
-      ssh_keys          = optional(map(string), {})
+      machine_type        = optional(string, "e2-micro")
+      public              = optional(bool, false)
+      ipv6                = optional(bool, true)
+      ssh_source_ranges   = optional(list(string), [])
+      ssh_keys            = optional(map(string), {})
+      deletion_protection = optional(bool, false)
       snapshots = optional(object({
         days_in_cycle     = optional(number, 1)
         start_time        = optional(string, "03:00")

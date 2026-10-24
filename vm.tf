@@ -15,14 +15,15 @@ module "vm" {
   subnet_id    = module.network.subnet_id
   machine_type = each.value.machine_type
 
-  static_external_ip = each.value.public
-  external_ipv6      = each.value.ipv6
-  allow_http_https   = each.value.public
-  allow_icmp         = each.value.public
-  ssh_source_ranges  = each.value.ssh_source_ranges
-  ssh_keys           = each.value.ssh_keys
-  snapshot_schedule  = each.value.snapshots
-  labels             = var.labels
+  static_external_ip  = each.value.public
+  external_ipv6       = each.value.ipv6
+  allow_http_https    = each.value.public
+  allow_icmp          = each.value.public
+  ssh_source_ranges   = each.value.ssh_source_ranges
+  ssh_keys            = each.value.ssh_keys
+  snapshot_schedule   = each.value.snapshots
+  deletion_protection = each.value.deletion_protection
+  labels              = var.labels
 
   depends_on = [google_project_service.apis]
 }
